@@ -142,6 +142,9 @@ public class MainActivity extends CardboardActivity implements CardboardView.Ste
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.common_ui);
+
+        // Render the view: 1.Get the CardboardView 2.Associate it with a render
+        // 3.Associate the CardboardView with the activity.
         CardboardView cardboardView = (CardboardView) findViewById(R.id.cardboard_view);
         cardboardView.setRenderer(this);
         setCardboardView(cardboardView);
