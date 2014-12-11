@@ -18,23 +18,32 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
+<<<<<<< HEAD
     buildToolsVersion '19.1'
+=======
+    buildToolsVersion '19.1.0'
+>>>>>>> origin/master
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
+<<<<<<< HEAD
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+=======
+
+    lintOptions.abortOnError false
+>>>>>>> origin/master
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:+'
+    compile group: 'com.google.guava', name: 'guava-jdk5', version: '14.0+'
 }
