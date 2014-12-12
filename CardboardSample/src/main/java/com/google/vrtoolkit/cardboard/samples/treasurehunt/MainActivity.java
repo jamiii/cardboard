@@ -39,10 +39,16 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
+import org.openintents.sensorsimulator.hardware.Sensor;
+import org.openintents.sensorsimulator.hardware.SensorEvent;
+import org.openintents.sensorsimulator.hardware.SensorEventListener;
+import org.openintents.sensorsimulator.hardware.SensorManagerSimulator;
+
 /**
  * A Cardboard sample application.
  */
-public class MainActivity extends CardboardActivity implements CardboardView.StereoRenderer {
+public class MainActivity extends CardboardActivity
+        implements CardboardView.StereoRenderer, SensorEventListener {
 
     private static final String TAG = "MainActivity";
 
@@ -106,6 +112,8 @@ public class MainActivity extends CardboardActivity implements CardboardView.Ste
 
     private Vibrator mVibrator;
     private CardboardOverlayView mOverlayView;
+
+    private SensorManagerSimulator mSensorManager;
 
     /**
      * Converts a raw text file, saved as a resource, into an OpenGL ES shader.
@@ -175,15 +183,23 @@ public class MainActivity extends CardboardActivity implements CardboardView.Ste
         mModelFloor = new float[16];
         mHeadView = new float[16];
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mSensorManager = SensorManagerSimulator.getSystemService(this, SENSOR_SERVICE);
 
 
         mOverlayView = (CardboardOverlayView) findViewById(R.id.overlay);
         mOverlayView.show3DToast("Pull the magnet when you find an object.");
+
+        registerSensors();
+
+        mSensorManager.connectSimulator();
+
     }
 
     @Override
     public void onRendererShutdown() {
+
         Log.i(TAG, "onRendererShutdown");
+        unregisterSensor();
     }
 
     @Override
@@ -202,6 +218,7 @@ public class MainActivity extends CardboardActivity implements CardboardView.Ste
     @Override
     public void onSurfaceCreated(EGLConfig config) {
         Log.i(TAG, "onSurfaceCreated");
+
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 0.5f); // Dark background so text shows up well.
 
         ByteBuffer bbVertices = ByteBuffer.allocateDirect(DATA.CUBE_COORDS.length * 4);
@@ -509,5 +526,25 @@ public class MainActivity extends CardboardActivity implements CardboardView.Ste
         float yaw = (float) Math.atan2(objPositionVec[0], -objPositionVec[2]);
 
         return Math.abs(pitch) < PITCH_LIMIT && Math.abs(yaw) < YAW_LIMIT;
+    }
+
+    private void registerSensors() {
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_TEMPERATURE), mSensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    private void unregisterSensor() {
+        mSensorManager.unregisterListener(this);
+    }
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    public void onSensorChanged(SensorEvent event) {
+        int sensor = event.type;
+        float[] values = event.values;
+        // do something with the sensor data
     }
 }

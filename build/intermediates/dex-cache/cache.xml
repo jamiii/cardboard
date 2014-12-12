@@ -9,6 +9,13 @@
         <dex dex="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\build\intermediates\pre-dexed\debug\libprotobuf-java-2.3-nano-5cfc61d9aa2fee2f2a6ad2e2ed3a92cb506fc302.jar" />
     </item>
     <item
+        jar="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\libs\sensorsimulator-lib-2.0-rc1.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="2b4dfb2303cd9ab2004521a362d2a4a33ef35ba5">
+        <dex dex="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\build\intermediates\pre-dexed\debug\sensorsimulator-lib-2.0-rc1-d62d9df3ef649e04813af07654ee19492428afcb.jar" />
+    </item>
+    <item
         jar="C:\Users\jmiloser\.gradle\caches\modules-2\files-2.1\com.google.guava\guava-jdk5\14.0.1\ec21c29e3f8afccff893486de213a86998daf134\guava-jdk5-14.0.1.jar"
         jumboMode="false"
         revision="19.1.0"

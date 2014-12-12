@@ -38,6 +38,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.guava:guava-jdk5:14.0+'
+    compile files('libs/sensorsimulator-2.0-rc1.jar')
+    compile files('libs/sensorsimulator-1.1.1.jar')
+    compile files('libs/sensorsimulator-lib-2.0-rc1.jar')
 }
 
 repositories {
