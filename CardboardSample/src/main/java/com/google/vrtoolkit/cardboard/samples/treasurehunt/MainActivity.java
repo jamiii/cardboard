@@ -44,6 +44,8 @@ import org.openintents.sensorsimulator.hardware.SensorEvent;
 import org.openintents.sensorsimulator.hardware.SensorEventListener;
 import org.openintents.sensorsimulator.hardware.SensorManagerSimulator;
 
+import android.os.AsyncTask;
+
 /**
  * A Cardboard sample application.
  */
@@ -114,6 +116,7 @@ public class MainActivity extends CardboardActivity
     private CardboardOverlayView mOverlayView;
 
     private SensorManagerSimulator mSensorManager;
+    private ConnectionToSensorSimulator conn;
 
     /**
      * Converts a raw text file, saved as a resource, into an OpenGL ES shader.
@@ -183,23 +186,43 @@ public class MainActivity extends CardboardActivity
         mModelFloor = new float[16];
         mHeadView = new float[16];
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        mSensorManager = SensorManagerSimulator.getSystemService(this, SENSOR_SERVICE);
-
-
         mOverlayView = (CardboardOverlayView) findViewById(R.id.overlay);
         mOverlayView.show3DToast("Pull the magnet when you find an object.");
 
-        registerSensors();
+        mSensorManager = SensorManagerSimulator.getSystemService(this, SENSOR_SERVICE);
+        conn = new ConnectionToSensorSimulator();
+        conn.execute();
+//        registerSensors();
+//        mSensorManager.connectSimulator();
 
-        mSensorManager.connectSimulator();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManagerSimulator.SENSOR_DELAY_NORMAL);
+
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                SensorManagerSimulator.SENSOR_DELAY_NORMAL);
+
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
+                SensorManagerSimulator.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
     public void onRendererShutdown() {
 
         Log.i(TAG, "onRendererShutdown");
-        unregisterSensor();
     }
 
     @Override
@@ -528,23 +551,64 @@ public class MainActivity extends CardboardActivity
         return Math.abs(pitch) < PITCH_LIMIT && Math.abs(yaw) < YAW_LIMIT;
     }
 
-    private void registerSensors() {
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), mSensorManager.SENSOR_DELAY_FASTEST);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), mSensorManager.SENSOR_DELAY_FASTEST);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), mSensorManager.SENSOR_DELAY_FASTEST);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_TEMPERATURE), mSensorManager.SENSOR_DELAY_FASTEST);
-    }
+//    private void registerSensors() {
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), mSensorManager.SENSOR_DELAY_FASTEST);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), mSensorManager.SENSOR_DELAY_FASTEST);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), mSensorManager.SENSOR_DELAY_FASTEST);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_TEMPERATURE), mSensorManager.SENSOR_DELAY_FASTEST);
+//    }
 
-    private void unregisterSensor() {
-        mSensorManager.unregisterListener(this);
-    }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
     public void onSensorChanged(SensorEvent event) {
-        int sensor = event.type;
-        float[] values = event.values;
-        // do something with the sensor data
+        synchronized (this) {
+
+            // SENSOR SIMULATOR
+            int sensor = event.type;
+            // **********
+
+            // REAL DEVICE
+            // int sensor = event.sensor.getType();
+            // **********
+
+            float[] values = event.values;
+
+            switch (sensor) {
+                case Sensor.TYPE_ACCELEROMETER:
+
+                    break;
+                case Sensor.TYPE_MAGNETIC_FIELD:
+
+                    break;
+                case Sensor.TYPE_GYROSCOPE:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    private class ConnectionToSensorSimulator extends
+            AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Log.d("SENSOR", "CONNECTING TO SENSOR SIMULATOR");
+            mSensorManager.connectSimulator();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (result) {
+                Log.d("SENSOR", "CONNECTED TO SENSOR SIMULATOR");
+            } else {
+                Log.d("SENSOR", "NOT CONNECTED TO SENSOR SIMULATOR");
+            }
+        }
+
     }
 }
