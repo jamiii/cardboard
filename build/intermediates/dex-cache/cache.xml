@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\libs\cardboard.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="c02b2206c0c78c747bcd26cab1cc948c5f00a63f">
-        <dex dex="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\build\intermediates\pre-dexed\debug\cardboard-81a8a7051436df312820e5c68402d4b328a4e31f.jar" />
-    </item>
-    <item
         jar="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\libs\libprotobuf-java-2.3-nano.jar"
         jumboMode="false"
         revision="19.1.0"
@@ -21,6 +14,13 @@
         revision="19.1.0"
         sha1="ec21c29e3f8afccff893486de213a86998daf134">
         <dex dex="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\build\intermediates\pre-dexed\debug\guava-jdk5-14.0.1-4e2c624946a0d5e9d1c2f3c04373a1790179c97f.jar" />
+    </item>
+    <item
+        jar="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\libs\cardboard.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="c02b2206c0c78c747bcd26cab1cc948c5f00a63f">
+        <dex dex="C:\Users\jmiloser\AndroidStudioProjects\cardboard\CardboardSample\build\intermediates\pre-dexed\debug\cardboard-81a8a7051436df312820e5c68402d4b328a4e31f.jar" />
     </item>
 
 </items>
